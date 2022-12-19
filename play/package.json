@@ -1,0 +1,12 @@
+{
+  "name": "@el-study/play",
+  "private": true,
+  "description": "",
+  "scripts": {
+    "dev": "vite"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.2.0",
+    "vite": "^3.2.5"
+  }
+}

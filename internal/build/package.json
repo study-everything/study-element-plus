@@ -1,0 +1,19 @@
+{
+  "name": "@el-study/build",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "MIT",
+  "author": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "gulp",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@esbuild-kit/cjs-loader": "^2.4.1",
+    "@pnpm/types": "^8.9.0",
+    "gulp": "^4.0.2"
+  }
+}
