@@ -7,7 +7,7 @@
   "author": "",
   "main": "index.ts",
   "scripts": {
-    "build": "gulp",
+    "build1": "gulp",
     "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

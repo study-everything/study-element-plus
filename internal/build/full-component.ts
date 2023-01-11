@@ -19,17 +19,23 @@ const buildFull = async () => {
   const config = {
     input: path.resolve(epRoot, 'index.ts'), // 打包入口
     plugins: [nodeResolve(), typescript(), vue(), commonjs()],
-    external: (id: string) => /^vue/.test(id) //不打包vue
+    external: (id: string) =>
+      /^vue/.test(id) ||
+      /^@el-study/.test(id) ||
+      /^lodash-unified/.test(id) ||
+      /^@vue\/shared/.test(id) ||
+      /^@vueuse\/core/.test(id) //不打包vue
   };
 
-  // 使用方式 import 浏览器直接script
+  // 使用方式 import导入组件库 浏览器直接script
   // esm  umd
 
+  // let {} = ElStudy
   const buildConfig = [
     {
       format: 'umd',
       file: path.resolve(outDir, 'index.js'), //打包目的地
-      name: 'EPlus', // 全局的名字
+      name: 'ElStudy', // 全局的名字
       exports: 'named', // 导出的名字 用命名的方式导出
       globals: {
         // 表示使用的vue是全局的
@@ -42,24 +48,29 @@ const buildFull = async () => {
     }
   ];
 
-  const bundle = await rollup(config);
+  const bundle = await rollup(config); // 产生bundle
 
-  return Promise.all(buildConfig.map((config) => bundle.write(config as OutputOptions)));
+  return Promise.all(buildConfig.map((config) => bundle.write(config as OutputOptions))); //输出
 };
 
-// 打包组件库入口
+// 打包组件库入口 js文件
 async function buildEntry() {
-  // 读取study-element-plus根目录 携带文件类型
+  // 读取study-element-plus根目录 携带文件类型 withFileTypes ts、json等
   const entryFiles = await fs.readdir(epRoot, { withFileTypes: true });
   const entryPoints = entryFiles
     .filter((f) => f.isFile())
-    .filter((f) => !['package.json'].includes(f.name))
-    .map((f) => path.resolve(epRoot, f.name));
+    .filter((f) => !['package.json'].includes(f.name)) //入口需要是文件 不能是package.json
+    .map((f) => path.resolve(epRoot, f.name)); //路径拼接
 
   const config = {
-    input: entryPoints,
+    input: entryPoints, //入口
     plugins: [nodeResolve(), vue(), typescript()],
-    external: (id: string) => /^vue/.test(id) || /^@el-study/.test(id)
+    external: (id: string) =>
+      /^vue/.test(id) ||
+      /^@el-study/.test(id) ||
+      /^lodash-unified/.test(id) ||
+      /^@vue\/shared/.test(id) ||
+      /^@vueuse\/core/.test(id)
   };
   const bundle = await rollup(config);
   // 重写路径放到es和lib下
@@ -67,13 +78,11 @@ async function buildEntry() {
     Object.values(buildConfig)
       .map((config) => ({
         format: config.format,
-        dir: config.output.path,
+        dir: config.output.path, //重写路径
         paths: pathRewriter(config.output.name)
       }))
-      .map((option) => bundle.write(option as OutputOptions))
+      .map((option) => bundle.write(option as OutputOptions)) //放到es lib下
   );
 }
-
-//  入口生成声明文件
 
 export const buildFullComponent = parallel(buildFull, buildEntry);

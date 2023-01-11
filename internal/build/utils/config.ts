@@ -9,7 +9,7 @@ export const buildConfig = {
       path: path.resolve(outDir, 'es')
     },
     bundle: {
-      path: 'study-element-plus/es'
+      path: 'study-element-plus/es' //转义路径
     }
   },
   cjs: {

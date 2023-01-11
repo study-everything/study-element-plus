@@ -1,15 +1,7 @@
 import { isArray, isObject } from '@vue/shared';
 import { isNil } from 'lodash-unified';
 
-export {
-  isArray,
-  isFunction,
-  isObject,
-  isString,
-  isDate,
-  isPromise,
-  isSymbol,
-} from '@vue/shared';
+export { isArray, isFunction, isObject, isString, isDate, isPromise, isSymbol } from '@vue/shared';
 export { isBoolean, isNumber } from '@vueuse/core';
 export { isVNode } from 'vue';
 
